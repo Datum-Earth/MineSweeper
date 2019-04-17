@@ -16,6 +16,13 @@ namespace MineSweeper
             }
         }
 
+        /// <summary>
+        /// Checks to see if a given position in the multidimensional array exists.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="matrix"></param>
+        /// <param name="positions"></param>
+        /// <returns></returns>
         public static bool PositionExistsAt<T>(this T[,] matrix, params int[] positions)
         {
             for (int i = 0; i < positions.Length; i++)

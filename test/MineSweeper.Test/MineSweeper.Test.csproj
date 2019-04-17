@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="BoardGenerator\BoardGeneratorTests.cs" />
     <Compile Include="BoardGenerator\MineSweeperBoardGeneratorTests.cs" />
+    <Compile Include="Boards\MineSweeperBoardTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +62,9 @@
       <Project>{6edafbf0-e2a1-483e-9aa9-574ef6504d88}</Project>
       <Name>MineSweeper</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

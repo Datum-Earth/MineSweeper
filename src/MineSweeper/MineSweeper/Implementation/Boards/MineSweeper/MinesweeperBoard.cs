@@ -1,25 +1,46 @@
-﻿using MineSweeper.Implementation.Enum;
-using MineSweeper.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+using MineSweeper.Implementation.Enum;
+using MineSweeper.Interfaces;
+using System.Diagnostics;
+using MineSweeper.Implementation.Board.Generators;
 
-namespace MineSweeper.Implementation.Board
+namespace MineSweeper.Implementation.Boards
 {
-    internal class MinesweeperBoard : IBoard
+    internal class MineSweeperBoard : IBoard
     {
-        ITile[,] BoardTiles { get; set; }
+        public ITile[,] BoardTiles { get; private set; }
+        MineSweeperBoardHelper BoardHelper { get; set; }
+
+        public MineSweeperBoard()
+        {
+            this.BoardHelper = new MineSweeperBoardHelper();
+        }
+
+        public void Start(BoardSize size)
+        {
+            var gen = new MineSweeperBoardGenerator(GetTileCountFromBoardSize(size));
+            this.BoardTiles = gen.GetBoard();
+        }
 
         public void OnClick(int x, int y)
         {
+            if (!this.BoardTiles.PositionExistsAt(y, x))
+            {
+                Trace.WriteLine("Invalid position.");
+                return;
+            }
+
             var pos = this.BoardTiles[y, x];
 
             if (!pos.IsEmpty)
             {
-                // game over
+                Trace.WriteLine("Game over!"); // TODO: actually implement a game over
             } else if (pos.AdjacentTileCount == 0)
             {
-                // fill (expose all blanks)
+                FloodFill(y, x);
             } else
             {
                 pos.IsHidden = false;
@@ -28,7 +49,23 @@ namespace MineSweeper.Implementation.Board
 
         void FloodFill(int startingY, int startingX)
         {
+            var adjacentTiles = this.BoardHelper.FindAdjacentTilePositions(this.BoardTiles, startingY, startingX);
 
+            foreach (var pos in adjacentTiles)
+            {
+                var tile = this.BoardTiles[pos.Item1, pos.Item2];
+
+                if (!tile.IsEmpty)
+                    return;
+                if (tile.AdjacentTileCount != 0)
+                {
+                    tile.IsHidden = false;
+                    return;
+                } else
+                {
+                    FloodFill(pos.Item1, pos.Item2);
+                }
+            }
         }
 
         int GetTileCountFromBoardSize(BoardSize size)
