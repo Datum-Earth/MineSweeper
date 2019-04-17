@@ -1,4 +1,5 @@
-﻿using MineSweeper.Implementation.Enum;
+﻿using MineSweeper.Implementation.Boards;
+using MineSweeper.Implementation.Enum;
 using MineSweeper.Implementation.Tiles;
 using MineSweeper.Interfaces;
 using System;
@@ -49,21 +50,18 @@ namespace MineSweeper.Implementation.Board.Generators
 
         void SetAdjacentValues(int tileY, int tileX, ITile[,] boardTiles, Func<ITile, bool> condition)
         {
-            int relativeStartingY = tileY - 1;
-            int relativeStartingX = tileX - 1;
-            int adjacentCount = 0;
+            var tileHelper = new MineSweeperBoardHelper();
+            var adjacentTiles = tileHelper.FindAdjacentTilePositions(boardTiles, tileY, tileX);
+            int adjacentConditionCount = 0;
 
-            for (int y = relativeStartingY; y < relativeStartingY + 3; y++)
+            foreach (var tile in adjacentTiles)
             {
-                for (int x = relativeStartingX; x < relativeStartingX + 3; x++)
-                {
-                    if (boardTiles.PositionExistsAt(y, x))
-                        if (!condition(boardTiles[y, x]))
-                            adjacentCount++;
-                }
+                if (!condition(boardTiles[tile.Item1, tile.Item2]))
+                    adjacentConditionCount++;
+
             }
 
-            boardTiles[tileY, tileX].AdjacentTileCount = adjacentCount;
+            boardTiles[tileY, tileX].AdjacentTileCount = adjacentConditionCount;
         }
 
         void PopulateBombs()

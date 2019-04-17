@@ -43,10 +43,11 @@
   <ItemGroup>
     <Compile Include="Implementation\BoardGenerators\Base\BaseGenerator.cs" />
     <Compile Include="Implementation\BoardGenerators\BoardGeneratorExtensions.cs" />
+    <Compile Include="Implementation\Boards\MineSweeper\MineSweeperBoardHelper.cs" />
     <Compile Include="Implementation\Enum\BoardSize.cs" />
     <Compile Include="Interfaces\IBoard.cs" />
     <Compile Include="Interfaces\ITile.cs" />
-    <Compile Include="Implementation\Boards\MineSweeper\MinesweeperBoard.cs" />
+    <Compile Include="Implementation\Boards\MineSweeper\MineSweeperBoard.cs" />
     <Compile Include="Implementation\BoardGenerators\MineSweeper\MineSweeperBoardGenerator.cs" />
     <Compile Include="Implementation\Tiles\MineTile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

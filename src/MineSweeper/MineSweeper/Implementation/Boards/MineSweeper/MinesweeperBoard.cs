@@ -1,6 +1,5 @@
 ﻿using MineSweeper.Implementation.Enum;
 using MineSweeper.Interfaces;
-using MineSweeper.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,11 +8,27 @@ namespace MineSweeper.Implementation.Board
 {
     internal class MinesweeperBoard : IBoard
     {
-        ITile[][] BoardTiles { get; set; }
+        ITile[,] BoardTiles { get; set; }
 
         public void OnClick(int x, int y)
         {
-            throw new NotImplementedException();
+            var pos = this.BoardTiles[y, x];
+
+            if (!pos.IsEmpty)
+            {
+                // game over
+            } else if (pos.AdjacentTileCount == 0)
+            {
+                // fill (expose all blanks)
+            } else
+            {
+                pos.IsHidden = false;
+            }
+        }
+
+        void FloodFill(int startingY, int startingX)
+        {
+
         }
 
         int GetTileCountFromBoardSize(BoardSize size)

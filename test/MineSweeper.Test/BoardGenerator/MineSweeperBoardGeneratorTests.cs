@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MineSweeper.Implementation.Board.Generators;
+using MineSweeper.Implementation.Boards;
 using MineSweeper.Interfaces;
 
 namespace MineSweeper.Test.BoardGenerator
@@ -66,6 +67,20 @@ namespace MineSweeper.Test.BoardGenerator
                     Assert.Fail();
             }
 
+        }
+
+        [TestMethod]
+        [TestProperty("TestType", "Automated")]
+        public void FindAdjacentDoesNotAllowNegativeStartingPoints()
+        {
+            var gen = new MineSweeperBoardGenerator(36, 6);
+            var board = gen.GetBoard();
+            var helper = new MineSweeperBoardHelper();
+
+            var adjacentTileCount = helper.FindAdjacentTilePositions(board, -1, -1).Count();
+
+            if (adjacentTileCount != 0)
+                Assert.Fail();
         }
 
         [TestMethod]
