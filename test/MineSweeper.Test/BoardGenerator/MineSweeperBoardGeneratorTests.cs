@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MineSweeper.Implementation.Board.Generators;
 using MineSweeper.Implementation.Boards;
 using MineSweeper.Interfaces;
+using static MineSweeper.Test.Helpers.ResultHelper;
 
 namespace MineSweeper.Test.BoardGenerator
 {
@@ -91,30 +92,6 @@ namespace MineSweeper.Test.BoardGenerator
             var board = gen.GetBoard();
 
             TraceBoard(board);
-        }
-
-        void TraceBoard(ITile[,] board)
-        {
-            for (int y = 0; y < board.GetLength(0); y++)
-            {
-                for (int x = 0; x < board.GetLength(1); x++)
-                {
-                    var elementAtPos = board[y, x];
-
-                    if (!elementAtPos.IsEmpty)
-                        Trace.Write("X");
-                    else if (elementAtPos.AdjacentTileCount != 0)
-                        Trace.Write(elementAtPos.AdjacentTileCount);
-                    else
-                        Trace.Write("\u25A1");
-
-                    Trace.Write("\t");
-                }
-
-                Trace.Write("\n");
-            }
-
-            Trace.WriteLine("");
         }
 
         // TODO: Make this less shitty

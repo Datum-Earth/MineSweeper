@@ -21,7 +21,9 @@ namespace MineSweeper.Implementation.Boards
 
         public void Start(BoardSize size)
         {
-            var gen = new MineSweeperBoardGenerator(GetTileCountFromBoardSize(size));
+            var tileCount = GetTileCountFromBoardSize(size);
+            var bombCount = tileCount / 6;
+            var gen = new MineSweeperBoardGenerator(tileCount, bombCount);
             this.BoardTiles = gen.GetBoard();
         }
 
@@ -47,25 +49,45 @@ namespace MineSweeper.Implementation.Boards
             }
         }
 
-        void FloodFill(int startingY, int startingX)
+        void FloodFill(int y, int x)
         {
-            var adjacentTiles = this.BoardHelper.FindAdjacentTilePositions(this.BoardTiles, startingY, startingX);
+            if (!this.BoardTiles.PositionExistsAt(y, x))
+                return;
+            
+            var tile = this.BoardTiles[y, x];
 
-            foreach (var pos in adjacentTiles)
+            if (!tile.IsHidden)
+                return;
+
+            tile.IsHidden = false;
+            if (BombPresent(y, x))
+                return;
+
+            FloodFill(y - 1, x - 1); //upper left
+            FloodFill(y - 1, x); // upper middle
+            FloodFill(y -1, x + 1); // upper right
+            FloodFill(y, x - 1); // middle left
+            FloodFill(y, x + 1); // middle right
+            FloodFill(y + 1, x - 1); // bottom left
+            FloodFill(y + 1, x); // bottom middle
+            FloodFill(y + 1, x + 1); // bottom right
+        }
+
+        bool BombPresent(int y, int x)
+        {
+            var adjacentTiles = this.BoardHelper.FindAdjacentTilePositions(this.BoardTiles, y, x).ToArray();
+
+            int bombCount = 0;
+            foreach (var adjTile in adjacentTiles)
             {
-                var tile = this.BoardTiles[pos.Item1, pos.Item2];
-
-                if (!tile.IsEmpty)
-                    return;
-                if (tile.AdjacentTileCount != 0)
-                {
-                    tile.IsHidden = false;
-                    return;
-                } else
-                {
-                    FloodFill(pos.Item1, pos.Item2);
-                }
+                if (!this.BoardTiles[adjTile.Item1, adjTile.Item2].IsEmpty)
+                    bombCount++;
             }
+
+            if (bombCount != 0)
+                return true;
+            else
+                return false;
         }
 
         int GetTileCountFromBoardSize(BoardSize size)
