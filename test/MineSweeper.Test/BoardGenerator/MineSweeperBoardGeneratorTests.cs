@@ -32,7 +32,7 @@ namespace MineSweeper.Test.BoardGenerator
                 var boardGen = new MineSweeperBoardGenerator(boardSize, mineCount);
                 var board = boardGen.GetBoard();
 
-                var actualMineCount = board.Select(x => !x.IsEmpty).Count();
+                var actualMineCount = board.Where(x => !x.IsEmpty).Count();
 
                 if (actualMineCount != mineCount)
                 {

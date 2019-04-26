@@ -7,7 +7,7 @@ namespace MineSweeper
 {
     public static partial class Extensions
     {
-        public static IEnumerable<ITile> Select(this ITile[,] matrix, Func<ITile, bool> equalityComparer)
+        public static IEnumerable<ITile> Where(this ITile[,] matrix, Func<ITile, bool> equalityComparer)
         {
             foreach (var tile in matrix)
             {

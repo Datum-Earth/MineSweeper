@@ -6,10 +6,12 @@ using MineSweeper.Implementation.Enum;
 using MineSweeper.Interfaces;
 using System.Diagnostics;
 using MineSweeper.Implementation.Board.Generators;
+using MineSweeper.Implementation.Boards.Events;
+using System.Threading.Tasks;
 
 namespace MineSweeper.Implementation.Boards
 {
-    internal class MineSweeperBoard : IBoard
+    public class MineSweeperBoard : IBoard
     {
         public ITile[,] BoardTiles { get; private set; }
         MineSweeperBoardHelper BoardHelper { get; set; }
@@ -27,25 +29,42 @@ namespace MineSweeper.Implementation.Boards
             this.BoardTiles = gen.GetBoard();
         }
 
-        public void OnClick(int x, int y)
+        public EventResult OnClick(int y, int x)
         {
             if (!this.BoardTiles.PositionExistsAt(y, x))
             {
-                Trace.WriteLine("Invalid position.");
-                return;
+                return new EventResult() { UpdatedBoard = this.BoardTiles, Status = GameStatus.InProgress, Message = "Invalid position." };
             }
 
             var pos = this.BoardTiles[y, x];
 
             if (!pos.IsEmpty)
             {
-                Trace.WriteLine("Game over!"); // TODO: actually implement a game over
-            } else if (pos.AdjacentTileCount == 0)
-            {
-                FloodFill(y, x);
+                ShowAllBombs();
+                return new EventResult() { UpdatedBoard = this.BoardTiles, Status = GameStatus.Lost };
             } else
             {
-                pos.IsHidden = false;
+                FloodFill(y, x);
+
+                var onlyBombsLeftHidden = this.BoardTiles.Where(tile => tile.IsHidden && tile.IsEmpty).Count() == 0 ? true : false;
+
+                if (onlyBombsLeftHidden)
+                {
+                    ShowAllBombs();
+                    return new EventResult() { UpdatedBoard = this.BoardTiles, Status = GameStatus.Won };
+                }
+
+                return new EventResult() { UpdatedBoard = this.BoardTiles, Status = GameStatus.InProgress };
+            }
+
+        }
+
+        void ShowAllBombs()
+        {
+            foreach (var tile in this.BoardTiles)
+            {
+                if (!tile.IsEmpty && tile.IsHidden)
+                    tile.IsHidden = false;
             }
         }
 

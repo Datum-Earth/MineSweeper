@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6EDAFBF0-E2A1-483E-9AA9-574EF6504D88}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MineSweeper</RootNamespace>
-    <AssemblyName>MineSweeper</AssemblyName>
+    <ProjectGuid>{4F6E8905-2396-4291-89A8-853086492AE9}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MineSweeper.CLI</RootNamespace>
+    <AssemblyName>MineSweeper.CLI</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,18 +43,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implementation\BoardGenerators\Base\BaseGenerator.cs" />
-    <Compile Include="Implementation\BoardGenerators\BoardGeneratorExtensions.cs" />
-    <Compile Include="Implementation\Boards\Events\BoardEvents.cs" />
-    <Compile Include="Implementation\Boards\MineSweeper\MineSweeperBoardHelper.cs" />
-    <Compile Include="Implementation\Enum\BoardSize.cs" />
-    <Compile Include="Implementation\Enum\GameStatus.cs" />
-    <Compile Include="Interfaces\IBoard.cs" />
-    <Compile Include="Interfaces\ITile.cs" />
-    <Compile Include="Implementation\Boards\MineSweeper\MineSweeperBoard.cs" />
-    <Compile Include="Implementation\BoardGenerators\MineSweeper\MineSweeperBoardGenerator.cs" />
-    <Compile Include="Implementation\Tiles\MineTile.cs" />
+    <Compile Include="Implementation\GameController.cs" />
+    <Compile Include="Implementation\MineSweeperView.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MineSweeper\MineSweeper.csproj">
+      <Project>{6edafbf0-e2a1-483e-9aa9-574ef6504d88}</Project>
+      <Name>MineSweeper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

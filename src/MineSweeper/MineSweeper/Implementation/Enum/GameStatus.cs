@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MineSweeper.Implementation.Enum
 {
-    public enum BoardSize
+    public enum GameStatus
     {
-        Undetermined,
-        Small,
-        Medium,
-        Large
+        Lost,
+        InProgress,
+        Won
     }
 }
